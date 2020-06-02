@@ -14,10 +14,14 @@ set(CMAKE_CXX_FLAGS_DEBUG "-ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${man_world_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIRS})
+include_directories(${SDL2_IMAGE_DIRS})
+
 include_directories(${CMAKE_SOURCE_DIR}/thirdparty)
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
@@ -25,7 +29,7 @@ file(GLOB_RECURSE man_world_SOURCES "src/*.cpp")
 file(GLOB_RECURSE thirdparty_SOURCES "thirdparty/*.cpp")
 
 add_executable(man_world ${man_world_SOURCES} ${thirdparty_SOURCES})
-target_link_libraries(man_world ${SDL2_LIBRARIES})
+target_link_libraries(man_world ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 
 add_custom_command(TARGET man_world PRE_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory

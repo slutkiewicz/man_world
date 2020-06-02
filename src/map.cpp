@@ -16,9 +16,9 @@ std::shared_ptr<map_t> map_t::generate_map_f()
 {
     map_t *map = new map_t(config_);
     map->map_of_ground = generate_ground_f();
-    map->map_of_high_ground = generate_high_ground_f();
-    map->map_of_items = generate_items_f();
-    map->map_of_humanoids = generate_humanoids_f();
+    // map->map_of_high_ground = generate_high_ground_f();
+    // map->map_of_items = generate_items_f();
+    // map->map_of_humanoids = generate_humanoids_f();
 
     return std::shared_ptr<map_t>(map);
 };
@@ -38,7 +38,7 @@ std::shared_ptr<std::map<cords_t, high_ground_t>> map_t::generate_high_ground_f(
     std::uniform_real_distribution<> distrReal(0, 1);
 
     std::cout << "start generate high ground" << std::endl;
-    std::map<cords_t, high_ground_t> *hight_ground_map =  &std::map<cords_t, high_ground_t>();
+    std::map<cords_t, high_ground_t> *hight_ground_map = new std::map<cords_t, high_ground_t>();
     unsigned int cells_width_n = (config_->width_ / config_->cell_size_);
     unsigned int cells_height_n = (config_->height_ / config_->cell_size_);
     for (unsigned int x = 0; x < cells_width_n; x++)
@@ -55,39 +55,90 @@ std::shared_ptr<std::map<cords_t, high_ground_t>> map_t::generate_high_ground_f(
     return std::shared_ptr<std::map<cords_t, high_ground_t>>(hight_ground_map);
 };
 
+Uint8 get_pixel(SDL_Surface *image, int x, int y)
+{
+    Uint8 index;
+    index = *(Uint8 *)image->pixels + y * image->pitch +
+            x * sizeof index;
+    ;
+    return index;
+};
+
 std::shared_ptr<std::map<cords_t, ground_t>> map_t::generate_ground_f()
 {
     std::cout << "start generate ground" << std::endl;
-    std::map<cords_t, ground_t> *ground_map = &std::map<cords_t, ground_t>();
+    SDL_Surface *image;
+    SDL_PixelFormat *fmt;
+    SDL_Color *color;
+    Uint8 index;
 
-    unsigned int cells_width_n = (config_->width_ / config_->cell_size_);
-    unsigned int cells_height_n = (config_->height_ / config_->cell_size_);
-    for (unsigned int x = 0; x < cells_width_n; x++)
+    image = utills::load_img_f(config_->ground_map_path);
+    fmt = image->format;
+    auto bp = fmt->BitsPerPixel;
+    /* Check the bitdepth of the surface */
+    if (fmt->BitsPerPixel != 8)
     {
-        for (unsigned int y = 0; y < cells_height_n; y++)
-        {
-            cords_t cords(x, y);
-            ground_t ground(config_, cords);
-            //TODO
-            ground_map->emplace(cords, ground);
-        }
+        fprintf(stderr, "Not an 8-bit surface.\n");
+        std::cout<<unsigned(bp)<<std::endl;
+        return nullptr;
     }
+    /* Lock the surface */
+    SDL_LockSurface(image);
+
+    /* Get the topleft pixel */
+    index = *(Uint8 *)image->pixels;
+
+    color = &fmt->palette->colors[index];
+
+    /* Unlock the surface */
+    SDL_UnlockSurface(image);
+    printf("Pixel Color-> Red: %d, Green: %d, Blue: %d. Index: %d\n",
+           color->r, color->g, color->b, index);
+
+    std::map<cords_t, ground_t> *ground_map = new std::map<cords_t, ground_t>;
+
+    // for (unsigned int x = 0; x < image->w; x++)
+    // {
+    //     for (unsigned int y = 0; y < image->h; y++)
+    //     {
+    //         if (image->)
+    //             cords_t cords(x, y);
+    //         ground_t ground(config_, cords);
+    //         //TODO
+    //         ground_map->emplace(cords, ground);
+    //     }
+    // }
+
+    utills::free_img_f(image);
+
+    // std::map<cords_t, ground_t> *ground_map = &std::map<cords_t, ground_t>();
+
+    // unsigned int cells_width_n = (config_->width_ / config_->cell_size_);
+    // unsigned int cells_height_n = (config_->height_ / config_->cell_size_);
+    // for (unsigned int x = 0; x < cells_width_n; x++)
+    // {
+    //     for (unsigned int y = 0; y < cells_height_n; y++)
+    //     {
+    //         cords_t cords(x, y);
+    //         ground_t ground(config_, cords);
+    //         //TODO
+    //         ground_map->emplace(cords, ground);
+    //     }
+    // }
     return std::shared_ptr<std::map<cords_t, ground_t>>(ground_map);
 };
 
 std::shared_ptr<std::map<cords_t, item_t>> map_t::generate_items_f()
 {
     std::cout << "start generate items" << std::endl;
-    std::map<cords_t, item_t> *item_map = &std::map<cords_t, item_t>();
-
+    std::map<cords_t, item_t> *item_map = new std::map<cords_t, item_t>;
 
     return std::shared_ptr<std::map<cords_t, item_t>>(item_map);
 };
 std::shared_ptr<std::map<cords_t, humanoids_t>> map_t::generate_humanoids_f()
 {
     std::cout << "start generate humanoids" << std::endl;
-    std::map<cords_t, humanoids_t> *humanoids_map = &std::map<cords_t, humanoids_t>();
-
+    std::map<cords_t, humanoids_t> *humanoids_map = new std::map<cords_t, humanoids_t>;
 
     return std::shared_ptr<std::map<cords_t, humanoids_t>>(humanoids_map);
 };

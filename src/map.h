@@ -6,6 +6,8 @@
 #include "environment/high_ground/high_ground.hpp"
 #include "humanoids/humanoids.hpp"
 #include "items/item.hpp"
+#include "utills.h"
+
 class cell_t; // FORWARD DECLARE CELL
 
 class map_t
