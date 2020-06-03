@@ -23,8 +23,8 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    game_t game(config);
+    game::game_t game(config);
     game.init_game_f();
-    // game.start_game_f();
+    game.start_game_f();
     return 0;
 }

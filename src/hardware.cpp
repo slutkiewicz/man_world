@@ -11,6 +11,7 @@ std::shared_ptr<hardware_objects_t> hardware_objects_t::init_hardware_subsystems
         errcheck(SDL_Init(SDL_INIT_EVERYTHING) != 0);
         IMG_Init(IMG_INIT_PNG);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+
         auto window = SDL_CreateWindow(
             "\\_man_world_/", SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED, width, height,

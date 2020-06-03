@@ -7,6 +7,13 @@
 #include "../third_party/json.hpp"
 #include <SDL2/SDL_image.h>
 
+
+//TODO on map loading set in config width height
+enum MOVEMENT 
+{
+    RIGHT,LEFT,UP,DOWN,NONE
+};
+
 struct cords_t
 {
 public:
@@ -14,6 +21,14 @@ public:
     cords_t(cords_t cords, int x_add, int y_add);
     cords_t();
     int x_, y_;
+};
+struct cords_dt_t
+{
+public:
+    cords_dt_t(double x, double y);
+    cords_dt_t(cords_dt_t cords, double x_add, double y_add);
+    cords_dt_t();
+    double x_, y_;
 };
 
 struct color_t

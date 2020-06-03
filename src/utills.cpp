@@ -22,3 +22,17 @@ cords_t::cords_t(cords_t cords,int x_add, int y_add)
 cords_t::cords_t(){
 
 };
+
+cords_dt_t::cords_dt_t(double x, double y)
+{
+    x_ = x;
+    y_ = y;
+};
+cords_dt_t::cords_dt_t(cords_dt_t cords,double x_add, double y_add)
+{
+    x_ = cords.x_+x_add;
+    y_ = cords.y_+y_add;
+};
+cords_dt_t::cords_dt_t(){
+
+};
