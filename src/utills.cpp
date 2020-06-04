@@ -23,12 +23,12 @@ cords_t::cords_t(){
 
 };
 
-cords_dt_t::cords_dt_t(double x, double y)
+cords_dt_t::cords_dt_t(float x, float y)
 {
     x_ = x;
     y_ = y;
 };
-cords_dt_t::cords_dt_t(cords_dt_t cords,double x_add, double y_add)
+cords_dt_t::cords_dt_t(cords_dt_t cords,float x_add, float y_add)
 {
     x_ = cords.x_+x_add;
     y_ = cords.y_+y_add;

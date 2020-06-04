@@ -25,10 +25,10 @@ public:
 struct cords_dt_t
 {
 public:
-    cords_dt_t(double x, double y);
-    cords_dt_t(cords_dt_t cords, double x_add, double y_add);
+    cords_dt_t(float x, float y);
+    cords_dt_t(cords_dt_t cords, float x_add, float y_add);
     cords_dt_t();
-    double x_, y_;
+    float x_, y_;
 };
 
 struct color_t

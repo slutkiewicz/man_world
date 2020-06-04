@@ -14,7 +14,7 @@ namespace game
     {
         std::cout << "start init game" << std::endl;
         hardware_ = create_hardware_f();
-        printf("config: %d  %d %d %d", config_->height_, config_->witdth_, config_->cell_size_, config_->map_size_);
+        printf("config: %d  %d %d %d", config_->height_, config_->width_, config_->cell_size_, config_->map_size_);
 
         world_ = world_t(config_);
         world_.create_map_f();
@@ -30,10 +30,10 @@ namespace game
         long int frame_number = 0;
         long int df = 0; // przyrost ramek/milisekund
         Uint32 prev_tick = SDL_GetTicks();
-
+        // int count = 0;
         //TODO new way for calculating frames
         std::cout << "start start game" << std::endl;
-        for (bool game_active = true; game_active;)
+        for (bool game_active = true; game_active;/*count++*/)
         {
 
             auto new_tick = SDL_GetTicks();
@@ -64,19 +64,29 @@ namespace game
             int i = 0;
             while (tdt > 0.0 && i < MAX_PHYSICS_STEPS)
             {
-                
-                float dt = std::min(tdt,MAX_DELTA_TIME);
+
+                float dt = std::min(tdt, MAX_DELTA_TIME);
                 world_.update_f(dt);
                 i++;
                 tdt -= dt;
             }
             world_.render_f(hardware_->renderer);
+            // printf("%d\n",count);
+            // if(count%10 == 0)
+            // {
+            //     count = 0;
+            // }
+            for (size_t i = 0; i < 10; i++)
+            {
+                /* code */
+            }
+            
         }
         std::cout << "finish start game" << std::endl;
     };
 
     std::shared_ptr<hardware_objects_t> game_t::create_hardware_f()
     {
-        return hardware_objects_t().init_hardware_subsystems(config_->witdth_, config_->height_, false);
+        return hardware_objects_t().init_hardware_subsystems(config_->width_, config_->height_, false);
     };
 } // namespace game
