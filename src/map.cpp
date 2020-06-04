@@ -4,6 +4,7 @@
 map_t::map_t(std::shared_ptr<config_t> config)
 {
     config_ = config;
+    camera_ = camera_t(0, 0);
 };
 map_t::map_t(){};
 
@@ -21,6 +22,23 @@ std::shared_ptr<map_t> map_t::generate_map_f()
     map->map_of_players = generate_players_f();
 
     return std::shared_ptr<map_t>(map);
+};
+
+void map_t::update_camera_f(const characters_t *player)
+{
+    camera_.cords = player->cordinates_;
+};
+
+bool map_t::check_camera_f()
+{
+    if (config_->height_ < config_->screen_height_ && config_->width_ < config_->screen_width_)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 };
 
 void map_t::render_f(SDL_Renderer *renderer)
@@ -80,7 +98,7 @@ std::shared_ptr<std::map<cords_t, high_ground_t>> map_t::generate_high_ground_f(
     SDL_Color *color_;
     Uint32 index;
 
-    image = utills::load_img_f(config_->high_ground_map_path);
+    image = utills::load_img_f(config_->high_ground_map_path_);
     fmt = image->format;
     int w, h;
     if (image->h < config_->height_)
@@ -179,7 +197,7 @@ std::shared_ptr<std::map<cords_t, ground_t>> map_t::generate_ground_f()
     SDL_Color *color_;
     Uint32 index;
     int w, h;
-    image = utills::load_img_f(config_->ground_map_path);
+    image = utills::load_img_f(config_->ground_map_path_);
     fmt = image->format;
     h = config_->height_ = image->h;
     w = config_->width_ = image->w;
@@ -241,12 +259,6 @@ std::shared_ptr<std::map<cords_t, ground_t>> map_t::generate_ground_f()
                 ground_map->emplace(cords, water_t(config_, cords));
                 //set map to water
             }
-
-            // if (image->)
-            //     cords_t cords(x, y);
-            // ground_t ground(config_, cords);
-            // //TODO
-            // ground_map->emplace(cords, ground);
         }
     }
     SDL_UnlockSurface(image);
@@ -270,6 +282,7 @@ std::shared_ptr<std::map<cords_t, characters_t>> map_t::generate_players_f()
     std::map<cords_t, characters_t> *characters_map = new std::map<cords_t, characters_t>;
     cords_t cords = cords_t(25, 25);
     characters_map->emplace(cords, player_t(config_, cords));
+    camera_ = camera_t(cords);
     return std::shared_ptr<std::map<cords_t, characters_t>>(characters_map);
 };
 
@@ -332,15 +345,40 @@ void map_t::render_high_ground_f(SDL_Renderer *renderer)
 
 void map_t::render_ground_f(SDL_Renderer *renderer)
 {
-
-    for (std::map<cords_t, ground_t>::iterator it = map_of_ground->begin(); it != map_of_ground->end(); ++it)
-    {
-        if (it != map_of_ground->end())
+    // if (check_camera_f())
+    // {
+        for (std::map<cords_t, ground_t>::iterator it = map_of_ground->begin(); it != map_of_ground->end(); ++it)
         {
-            it->second.draw_f(renderer);
+            if (it != map_of_ground->end())
+            {
+                it->second.draw_f(renderer);
+            }
         }
-    }
+    // }
+    // else
+    // {
+    //     int w, h;
 
+    //     if (camera_.cords.y_ > config_->screen_height_ << 2)
+    //     {
+    //         h = config_->screen_height_ << 2;
+    //     }
+    //     else
+    //     {
+            
+    //     }
+        
+
+    // }
+
+    // for (int y = camera_.cords.y_ - h; y < camera_.cords.y_ + (config_->screen_height_ << 2); y++)
+    //     {
+    //         for (int x = camera_.cords.x_ - (config_->screen_width_ << 2); x < camera_.cords.x_ + (config_->screen_width_ << 2); x++)
+    //         {
+
+    //             map_of_ground->at(cords_t(x, y))
+    //         }
+    //     }
 };
 
 void map_t::calculate_characters_f(){

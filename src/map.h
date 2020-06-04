@@ -27,7 +27,7 @@ public:
     // std::shared_ptr<map_t> generate_map_f();
     std::shared_ptr<map_t> generate_map_f();
     void render_f(SDL_Renderer *renderer);
-
+    camera_t camera_;
     void calculate_characters_f();
     void print_config_f();
 
@@ -37,6 +37,7 @@ public:
     std::shared_ptr<std::map<cords_t, item_t>> map_of_items;
     std::shared_ptr<std::map<cords_t, characters_t>> map_of_creatures;
     std::shared_ptr<std::map<cords_t, characters_t>> map_of_players;
+    void update_camera_f(const characters_t *player);
 
 private:
     std::shared_ptr<std::map<cords_t, ground_t>> generate_ground_f();
@@ -50,6 +51,8 @@ private:
     void render_items_f(SDL_Renderer *renderer);
     void render_creatures_f(SDL_Renderer *renderer);
     void render_players_f(SDL_Renderer *renderer);
+
+    bool check_camera_f();
 
     std::shared_ptr<config_t> config_;
 };

@@ -21,9 +21,5 @@ public:
                                color_.a_);
 
         SDL_RenderFillRect(renderer, &rect);
-        // printf("r:%d g:%d b:%d\n",
-        //        color_.r_,
-        //        color_.g_,
-        //        color_.b_);
     };
 };

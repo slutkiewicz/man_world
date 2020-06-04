@@ -87,6 +87,6 @@ namespace game
 
     std::shared_ptr<hardware_objects_t> game_t::create_hardware_f()
     {
-        return hardware_objects_t().init_hardware_subsystems(config_->width_, config_->height_, false);
+        return hardware_objects_t().init_hardware_subsystems(config_->screen_width_, config_->screen_height_, false);
     };
 } // namespace game

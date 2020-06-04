@@ -30,7 +30,7 @@ bool world_t::if_collision(characters_t *character)
     {
     case MOVEMENT::LEFT:
     {
-        for (unsigned int i =character->cordinates_.x_ ; i < character->cordinates_prev_.x_; i++)
+        for (unsigned int i = character->cordinates_.x_; i < character->cordinates_prev_.x_; i++)
         {
             if (map_->map_of_high_ground->find(cords_t(i, character->cordinates_.y_)) != map_->map_of_high_ground->end())
             {
@@ -42,7 +42,7 @@ bool world_t::if_collision(characters_t *character)
         break;
     }
     case MOVEMENT::RIGHT:
-        for (unsigned int i = character->cordinates_prev_.x_; i < character->cordinates_.x_+1 ; i++)
+        for (unsigned int i = character->cordinates_prev_.x_; i < character->cordinates_.x_ + 1; i++)
         {
             if (map_->map_of_high_ground->find(cords_t(i, character->cordinates_.y_)) != map_->map_of_high_ground->end())
             {
@@ -64,7 +64,7 @@ bool world_t::if_collision(characters_t *character)
         }
         break;
     case MOVEMENT::DOWN:
-        for (unsigned int i = character->cordinates_prev_.y_; i < character->cordinates_.y_+1; i++)
+        for (unsigned int i = character->cordinates_prev_.y_; i < character->cordinates_.y_ + 1; i++)
         {
             if (map_->map_of_high_ground->find(cords_t(character->cordinates_.x_, i)) != map_->map_of_high_ground->end())
             {
@@ -173,6 +173,7 @@ void world_t::update_players_f(double dt)
             {
                 ++it;
             }
+            map_->update_camera_f(player);
         }
         else
         {
