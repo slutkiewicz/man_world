@@ -76,6 +76,7 @@ void world_t::update_players_f(double dt)
 
         switch (player.direction_)
         {
+            // auto ground_speed = ge4t from ground map
         case MOVEMENT::LEFT:
             player.cordinates_dt_.x_ -= player.speed * dt;
             printf("x: %f", player.cordinates_dt_.x_);

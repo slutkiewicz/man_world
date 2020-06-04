@@ -2,6 +2,7 @@
 
 #include "world.h"
 #include "hardware.h"
+#include <algorithm>
 namespace game
 {
     enum EVENT_ENUM
