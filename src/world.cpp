@@ -26,10 +26,60 @@ void world_t::update_f(double dt)
 
 bool world_t::if_collision(characters_t *character)
 {
-    //TODO check for every map
-    if (character->cordinates_.x_ > config_->width_)
+    switch (character->direction_)
     {
+    case MOVEMENT::LEFT:
+    {
+        for (unsigned int i =character->cordinates_.x_ ; i < character->cordinates_prev_.x_; i++)
+        {
+            if (map_->map_of_high_ground->find(cords_t(i, character->cordinates_.y_)) != map_->map_of_high_ground->end())
+            {
+                character->cordinates_.x_ = character->cordinates_prev_.x_;
+                character->cordinates_dt_.x_ = character->cordinates_prev_.x_; //TODO all like that if coliision after
+                return true;
+            }
+        }
+        break;
+    }
+    case MOVEMENT::RIGHT:
+        for (unsigned int i = character->cordinates_prev_.x_; i < character->cordinates_.x_+1 ; i++)
+        {
+            if (map_->map_of_high_ground->find(cords_t(i, character->cordinates_.y_)) != map_->map_of_high_ground->end())
+            {
+                character->cordinates_.x_ = character->cordinates_prev_.x_;
+                character->cordinates_dt_.x_ = character->cordinates_prev_.x_;
+                return true;
+            }
+        }
+        break;
+    case MOVEMENT::UP:
+        for (unsigned int i = character->cordinates_.y_; i < character->cordinates_prev_.y_; i++)
+        {
+            if (map_->map_of_high_ground->find(cords_t(character->cordinates_.x_, i)) != map_->map_of_high_ground->end())
+            {
+                character->cordinates_.y_ = character->cordinates_prev_.y_;
+                character->cordinates_dt_.y_ = character->cordinates_prev_.y_;
+                return true;
+            }
+        }
+        break;
+    case MOVEMENT::DOWN:
+        for (unsigned int i = character->cordinates_prev_.y_; i < character->cordinates_.y_+1; i++)
+        {
+            if (map_->map_of_high_ground->find(cords_t(character->cordinates_.x_, i)) != map_->map_of_high_ground->end())
+            {
+                character->cordinates_.y_ = character->cordinates_prev_.y_;
+                character->cordinates_dt_.y_ = character->cordinates_prev_.y_;
+                return true;
+            }
+        }
+        break;
+    default:
+        break;
+    }
 
+    if (character->cordinates_.x_ > (config_->width_ - 1))
+    {
         character->cordinates_.x_ = config_->width_ - 1;
         character->cordinates_dt_.x_ = config_->width_ - 1;
         return true;
@@ -40,7 +90,7 @@ bool world_t::if_collision(characters_t *character)
         character->cordinates_dt_.x_ = 1;
         return true;
     }
-    else if (character->cordinates_.y_ > config_->height_)
+    else if (character->cordinates_.y_ > (config_->height_ - 1))
     {
         character->cordinates_.y_ = config_->height_ - 1;
         character->cordinates_dt_.y_ = config_->height_ - 1;
@@ -79,30 +129,31 @@ void world_t::update_players_f(double dt)
 
         switch (player->direction_)
         {
-            // auto ground_speed = ge4t from ground map
         case MOVEMENT::LEFT:
             player->cordinates_dt_.x_ = player->cordinates_dt_.x_ - (player->speed * dt * map_->map_of_ground->at(player->cordinates_).speed_);
             printf("x: %f\n", player->cordinates_dt_.x_);
+            player->cordinates_prev_.x_ = player->cordinates_.x_;
             player->cordinates_.x_ = player->cordinates_dt_.x_;
             break;
         case MOVEMENT::RIGHT:
             player->cordinates_dt_.x_ = player->cordinates_dt_.x_ + (player->speed * dt * map_->map_of_ground->at(player->cordinates_).speed_);
             printf("x: %f\n", player->cordinates_dt_.x_);
+            player->cordinates_prev_.x_ = player->cordinates_.x_;
             player->cordinates_.x_ = player->cordinates_dt_.x_;
             break;
         case MOVEMENT::UP:
             player->cordinates_dt_.y_ = player->cordinates_dt_.y_ - (player->speed * dt * map_->map_of_ground->at(player->cordinates_).speed_);
             printf("y: %f\n", player->cordinates_dt_.y_);
+            player->cordinates_prev_.y_ = player->cordinates_.y_;
             player->cordinates_.y_ = player->cordinates_dt_.y_;
             break;
         case MOVEMENT::DOWN:
             player->cordinates_dt_.y_ = player->cordinates_dt_.y_ + (player->speed * dt * map_->map_of_ground->at(player->cordinates_).speed_); // multiply by ground speed_ability
             printf("y: %f\n", player->cordinates_dt_.y_);
+            player->cordinates_prev_.y_ = player->cordinates_.y_;
             player->cordinates_.y_ = player->cordinates_dt_.y_;
             break;
         case MOVEMENT::NONE:
-            // player->cordinates_dt_.y_ = 0;
-            // player->cordinates_dt_.x_ = 0;
             break;
         default:
             break;

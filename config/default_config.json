@@ -3,5 +3,6 @@
     "width": 800,
     "cell_size" : 10,
     "map_size" : 10,
-    "ground_map_path" : "data/ground.png"
+    "ground_map_path" : "data/ground.png",
+    "high_ground_map_path" : "data/high_ground.png"
 }

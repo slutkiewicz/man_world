@@ -15,6 +15,8 @@ public:
     int speed;
     color_t color_;
     cords_dt_t cordinates_dt_;
+    cords_t cordinates_prev_;
+
     MOVEMENT direction_;
     void draw_f(SDL_Renderer *renderer)
     {

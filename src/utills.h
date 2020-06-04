@@ -7,7 +7,6 @@
 #include "../third_party/json.hpp"
 #include <SDL2/SDL_image.h>
 
-
 //TODO on map loading set in config width height
 enum MOVEMENT 
 {
@@ -43,7 +42,7 @@ class config_t
 {
 public:
     int height_, width_, cell_size_, map_size_;
-    std::string ground_map_path;
+    std::string ground_map_path,high_ground_map_path;
 };
 class utills
 {
@@ -61,8 +60,9 @@ public:
             config->cell_size_ = config_json["cell_size"];
             config->map_size_ = config_json["map_size"];
             config->ground_map_path = config_json["ground_map_path"];
+            config->high_ground_map_path = config_json["high_ground_map_path"];
 
-            printf("config: %d  %d %d %d %s", config->height_, config->width_, config->cell_size_, config->map_size_,config->ground_map_path.c_str());
+            printf("config: %d  %d %d %d %s %s\n", config->height_, config->width_, config->cell_size_, config->map_size_,config->ground_map_path.c_str(),config->high_ground_map_path.c_str());
 
             return std::shared_ptr<config_t>(config);
         }

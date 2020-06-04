@@ -10,6 +10,8 @@
 #include "environment/ground/grass.h"
 
 #include "environment/high_ground/high_ground.h"
+#include "environment/high_ground/marble_block.h"
+#include "environment/high_ground/tree.h"
 #include "characters/characters.h"
 #include "characters/players/player.h"
 #include "items/item.h"
