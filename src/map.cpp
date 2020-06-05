@@ -162,24 +162,8 @@ std::shared_ptr<std::map<cords_t, high_ground_t>> map_t::generate_high_ground_f(
                 hight_ground_map->emplace(cords, tree_t(config_, cords));
                 //set map to grass
             }
-            // else if (unsigned(r) > 250)
-            // {
-            //     // printf("red\n");
-            //     hight_ground_map->emplace(cords, fire_t(config_, cords));
-            //     //set map to fire
-            // }
-            // else if (unsigned(b) > 250)
-            // {
-            //     // printf("blue\n");
-            //     hight_ground_map->emplace(cords, water_t(config_, cords));
-            //     //set map to water
-            // }
 
-            // if (image->)
-            //     cords_t cords(x, y);
             ground_t ground(config_, cords);
-            // //TODO
-            // ground_map->emplace(cords, ground);
         }
     }
     SDL_UnlockSurface(image);
@@ -226,36 +210,29 @@ std::shared_ptr<std::map<cords_t, ground_t>> map_t::generate_ground_f()
             Uint8 b;
             SDL_GetRGB(index, fmt, &r, &g, &b);
             color_ = &fmt->palette->colors[index];
-            // printf("x-> %d y-> %d  Pixel Color-> Red: %d, Green: %d, Blue: %d. Index: %d\n",
-            //        x, y, unsigned(r), unsigned(g), unsigned(b), index);
             if (unsigned(r) > 250 & unsigned(b) > 250 & unsigned(g) > 250)
             {
-                // printf("white\n");
                 ground_map->emplace(cords, marble_t(config_, cords));
 
                 //set map to marble
             }
             else if (unsigned(r) < 5 & unsigned(b) < 5 & unsigned(g) < 5)
             {
-                // printf("black\n");
                 ground_map->emplace(cords, earth_t(config_, cords));
                 //set map to earth
             }
             else if (unsigned(g) > 250)
             {
-                // printf("green\n");
                 ground_map->emplace(cords, grass_t(config_, cords));
                 //set map to grass
             }
             else if (unsigned(r) > 250)
             {
-                // printf("red\n");
                 ground_map->emplace(cords, fire_t(config_, cords));
                 //set map to fire
             }
             else if (unsigned(b) > 250)
             {
-                // printf("blue\n");
                 ground_map->emplace(cords, water_t(config_, cords));
                 //set map to water
             }
@@ -347,13 +324,13 @@ void map_t::render_ground_f(SDL_Renderer *renderer)
 {
     // if (check_camera_f())
     // {
-        for (std::map<cords_t, ground_t>::iterator it = map_of_ground->begin(); it != map_of_ground->end(); ++it)
+    for (std::map<cords_t, ground_t>::iterator it = map_of_ground->begin(); it != map_of_ground->end(); ++it)
+    {
+        if (it != map_of_ground->end())
         {
-            if (it != map_of_ground->end())
-            {
-                it->second.draw_f(renderer);
-            }
+            it->second.draw_f(renderer);
         }
+    }
     // }
     // else
     // {
@@ -365,9 +342,8 @@ void map_t::render_ground_f(SDL_Renderer *renderer)
     //     }
     //     else
     //     {
-            
+
     //     }
-        
 
     // }
 

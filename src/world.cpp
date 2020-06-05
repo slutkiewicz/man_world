@@ -131,25 +131,25 @@ void world_t::update_players_f(double dt)
         {
         case MOVEMENT::LEFT:
             player->cordinates_dt_.x_ = player->cordinates_dt_.x_ - (player->speed * dt * map_->map_of_ground->at(player->cordinates_).speed_);
-            printf("x: %f\n", player->cordinates_dt_.x_);
+            // printf("x: %f\n", player->cordinates_dt_.x_);
             player->cordinates_prev_.x_ = player->cordinates_.x_;
             player->cordinates_.x_ = player->cordinates_dt_.x_;
             break;
         case MOVEMENT::RIGHT:
             player->cordinates_dt_.x_ = player->cordinates_dt_.x_ + (player->speed * dt * map_->map_of_ground->at(player->cordinates_).speed_);
-            printf("x: %f\n", player->cordinates_dt_.x_);
+            // printf("x: %f\n", player->cordinates_dt_.x_);
             player->cordinates_prev_.x_ = player->cordinates_.x_;
             player->cordinates_.x_ = player->cordinates_dt_.x_;
             break;
         case MOVEMENT::UP:
             player->cordinates_dt_.y_ = player->cordinates_dt_.y_ - (player->speed * dt * map_->map_of_ground->at(player->cordinates_).speed_);
-            printf("y: %f\n", player->cordinates_dt_.y_);
+            // printf("y: %f\n", player->cordinates_dt_.y_);
             player->cordinates_prev_.y_ = player->cordinates_.y_;
             player->cordinates_.y_ = player->cordinates_dt_.y_;
             break;
         case MOVEMENT::DOWN:
             player->cordinates_dt_.y_ = player->cordinates_dt_.y_ + (player->speed * dt * map_->map_of_ground->at(player->cordinates_).speed_); // multiply by ground speed_ability
-            printf("y: %f\n", player->cordinates_dt_.y_);
+            // printf("y: %f\n", player->cordinates_dt_.y_);
             player->cordinates_prev_.y_ = player->cordinates_.y_;
             player->cordinates_.y_ = player->cordinates_dt_.y_;
             break;
@@ -164,7 +164,6 @@ void world_t::update_players_f(double dt)
             auto ret = map_->map_of_players->emplace(player->cordinates_, *player);
             if (ret.second)
             {
-                printf("teru\n");
 
                 newCords.emplace(player->cordinates_, true);
                 map_->map_of_players->erase(it++);

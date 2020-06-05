@@ -26,12 +26,12 @@ namespace game
         const double DESIRED_FPS = 60.0;
         const double DESIRED_FRAMERATE = 1000.0 / DESIRED_FPS;
         const double MAX_DELTA_TIME = 1.0;
+        
         double tdt = 0; // przyrost czasu w sekundach
         long int frame_number = 0;
         long int df = 0; // przyrost ramek/milisekund
+
         Uint32 prev_tick = SDL_GetTicks();
-        // int count = 0;
-        //TODO new way for calculating frames
         std::cout << "start start game" << std::endl;
         for (bool game_active = true; game_active;/*count++*/)
         {
@@ -39,8 +39,6 @@ namespace game
             auto new_tick = SDL_GetTicks();
             tdt = (new_tick - prev_tick) / DESIRED_FRAMERATE;
             prev_tick = new_tick;
-
-            // frame_number += (df = (new_tick - prev_tick));
 
             SDL_Event event;
             EVENT_ENUM evnt = EVENT_ENUM::NONE;
@@ -71,15 +69,6 @@ namespace game
                 tdt -= dt;
             }
             world_.render_f(hardware_->renderer);
-            // printf("%d\n",count);
-            // if(count%10 == 0)
-            // {
-            //     count = 0;
-            // }
-            for (size_t i = 0; i < 10; i++)
-            {
-                /* code */
-            }
             
         }
         std::cout << "finish start game" << std::endl;
@@ -89,4 +78,4 @@ namespace game
     {
         return hardware_objects_t().init_hardware_subsystems(config_->screen_width_, config_->screen_height_, false);
     };
-} // namespace game
+}
