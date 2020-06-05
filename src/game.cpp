@@ -57,9 +57,9 @@ namespace game
             {
                 game_active = false;
             }
-
             world_.handle_event_f();
             int i = 0;
+
             while (tdt > 0.0 && i < MAX_PHYSICS_STEPS)
             {
 

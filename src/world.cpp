@@ -18,7 +18,6 @@ void world_t::render_f(SDL_Renderer *renderer)
 
 void world_t::update_f(double dt)
 {
-
     update_players_f(dt);
 
     // calculate_characters();
@@ -167,12 +166,13 @@ void world_t::update_players_f(double dt)
 
                 newCords.emplace(player->cordinates_, true);
                 map_->map_of_players->erase(it++);
+                map_->update_camera_f(player);
+
             }
             else
             {
                 ++it;
             }
-            map_->update_camera_f(player);
         }
         else
         {
@@ -183,7 +183,10 @@ void world_t::update_players_f(double dt)
 
 void world_t::handle_event_f()
 {
+    // printf("handle\n");
     handle_players_f();
+    // printf("after handle\n");
+
 };
 
 void world_t::handle_players_f()
@@ -240,6 +243,7 @@ void world_t::handle_players_f()
             }
         }
     }
+
 };
 
 void world_t::create_map_f()

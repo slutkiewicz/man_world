@@ -31,14 +31,6 @@ camera_t::camera_t(cords_t cords, int width, int height)
     height_ = height_;
 };
 
-camera_t::camera_t(cords_t cords, int x_add, int y_add)
-{
-    cords_.x_ = cords.x_ + x_add;
-    cords_.y_ = cords.y_ + y_add;
-    width_ = 0;
-    height_ = 0;
-};
-
 camera_t::camera_t(cords_t cords)
 {
     cords_ = cords;

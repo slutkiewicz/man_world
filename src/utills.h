@@ -43,7 +43,6 @@ struct camera_t
 {
 public:
         camera_t(int x, int y);
-        camera_t(cords_t cords, int x_add, int y_add);
         camera_t(cords_t cords, int width, int height);
         camera_t(cords_t);
         camera_t();
