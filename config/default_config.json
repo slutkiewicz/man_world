@@ -1,8 +1,8 @@
 {
     "screen_height": 600,
     "screen_width": 800,
-    "height": 0,
-    "width": 0,
+    "map_height": 0,
+    "map_width": 0,
     "cell_size" : 10,
     "map_size" : 10,
     "ground_map_path" : "data/ground.png",

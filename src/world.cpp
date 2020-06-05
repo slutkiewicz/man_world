@@ -78,10 +78,10 @@ bool world_t::if_collision(characters_t *character)
         break;
     }
 
-    if (character->cordinates_.x_ > (config_->width_ - 1))
+    if (character->cordinates_.x_ > (config_->map_width_ - 1))
     {
-        character->cordinates_.x_ = config_->width_ - 1;
-        character->cordinates_dt_.x_ = config_->width_ - 1;
+        character->cordinates_.x_ = config_->map_width_ - 1;
+        character->cordinates_dt_.x_ = config_->map_width_ - 1;
         return true;
     }
     else if (character->cordinates_.x_ < 0)
@@ -90,10 +90,10 @@ bool world_t::if_collision(characters_t *character)
         character->cordinates_dt_.x_ = 1;
         return true;
     }
-    else if (character->cordinates_.y_ > (config_->height_ - 1))
+    else if (character->cordinates_.y_ > (config_->map_height_ - 1))
     {
-        character->cordinates_.y_ = config_->height_ - 1;
-        character->cordinates_dt_.y_ = config_->height_ - 1;
+        character->cordinates_.y_ = config_->map_height_ - 1;
+        character->cordinates_dt_.y_ = config_->map_height_ - 1;
         return true;
     }
     else if (character->cordinates_.y_ < 0)

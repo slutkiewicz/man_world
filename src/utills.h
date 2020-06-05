@@ -44,15 +44,17 @@ struct camera_t
 public:
         camera_t(int x, int y);
         camera_t(cords_t cords, int x_add, int y_add);
+        camera_t(cords_t cords, int width, int height);
         camera_t(cords_t);
         camera_t();
-        cords_t cords;
+        cords_t cords_;
+        int width_,height_;
 };
 
 class config_t
 {
 public:
-    int screen_height_, screen_width_,height_, width_, cell_size_, map_size_;
+    int screen_height_, screen_width_,map_height_, map_width_, cell_size_, map_size_;
     std::string ground_map_path_,high_ground_map_path_;
 };
 
@@ -69,14 +71,14 @@ public:
             config_t *config = new config_t;
             config->screen_height_ = config_json["screen_height"];
             config->screen_width_ = config_json["screen_width"];
-            config->height_ = config_json["height"];
-            config->width_ = config_json["width"];
+            config->map_height_ = config_json["map_height"];
+            config->map_width_ = config_json["map_width"];
             config->cell_size_ = config_json["cell_size"];
             config->map_size_ = config_json["map_size"];
             config->ground_map_path_ = config_json["ground_map_path"];
             config->high_ground_map_path_ = config_json["high_ground_map_path"];
 
-            printf("config: %d  %d %d %d %s %s\n", config->height_, config->width_, config->cell_size_, config->map_size_,config->ground_map_path_.c_str(),config->high_ground_map_path_.c_str());
+            printf("config: %d  %d %d %d %s %s\n", config->map_height_, config->map_width_, config->cell_size_, config->map_size_,config->ground_map_path_.c_str(),config->high_ground_map_path_.c_str());
 
             return std::shared_ptr<config_t>(config);
         }

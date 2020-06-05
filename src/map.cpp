@@ -10,7 +10,7 @@ map_t::map_t(){};
 
 void map_t::print_config_f()
 {
-    printf("config: %d  %d %d %d", config_->height_, config_->width_, config_->cell_size_, config_->map_size_);
+    printf("config: %d  %d %d %d", config_->map_height_, config_->map_width_, config_->cell_size_, config_->map_size_);
 };
 
 std::shared_ptr<map_t> map_t::generate_map_f()
@@ -20,24 +20,26 @@ std::shared_ptr<map_t> map_t::generate_map_f()
     map->map_of_high_ground = generate_high_ground_f();
     // map->map_of_items = generate_items_f();
     map->map_of_players = generate_players_f();
-
+    if (config_->map_width_ < config_->screen_width_)
+    {
+        camera_.width_ = config_->map_width_;
+    }
+    if (config_->map_height_ < config_->screen_height_)
+    {
+        camera_.height_ = config_->map_height_;
+    }
     return std::shared_ptr<map_t>(map);
 };
 
 void map_t::update_camera_f(const characters_t *player)
 {
-    camera_.cords = player->cordinates_;
-};
-
-bool map_t::check_camera_f()
-{
-    if (config_->height_ < config_->screen_height_ && config_->width_ < config_->screen_width_)
+    if (!(((config_->map_width_ - player->cordinates_.x_) < config_->screen_width_) || (player->cordinates_.x_ < config_->screen_width_)))
     {
-        return false;
+        camera_.cords_.x_ = player->cordinates_.x_;
     }
-    else
+    if (!(((config_->map_height_ - player->cordinates_.y_) < config_->screen_height_) || (player->cordinates_.y_ < config_->screen_height_)))
     {
-        return true;
+        camera_.cords_.y_ = player->cordinates_.y_;
     }
 };
 
@@ -101,22 +103,22 @@ std::shared_ptr<std::map<cords_t, high_ground_t>> map_t::generate_high_ground_f(
     image = utills::load_img_f(config_->high_ground_map_path_);
     fmt = image->format;
     int w, h;
-    if (image->h < config_->height_)
+    if (image->h < config_->map_height_)
     {
         h = image->h;
     }
     else
     {
-        h = config_->height_;
+        h = config_->map_height_;
     }
 
-    if (image->w < config_->width_)
+    if (image->w < config_->map_width_)
     {
         w = image->w;
     }
     else
     {
-        w = config_->width_;
+        w = config_->map_width_;
     }
     auto bp = fmt->BitsPerPixel;
     /* Check the bitdepth of the surface */
@@ -131,9 +133,9 @@ std::shared_ptr<std::map<cords_t, high_ground_t>> map_t::generate_high_ground_f(
 
     std::map<cords_t, high_ground_t> *hight_ground_map = new std::map<cords_t, high_ground_t>();
 
-    for (unsigned int y = 0; y < config_->height_; y++)
+    for (unsigned int y = 0; y < config_->map_height_; y++)
     {
-        for (unsigned int x = 0; x < config_->width_; x++)
+        for (unsigned int x = 0; x < config_->map_width_; x++)
         {
             cords_t cords(x, y);
             index = get_pixel(image, x, y);
@@ -183,8 +185,8 @@ std::shared_ptr<std::map<cords_t, ground_t>> map_t::generate_ground_f()
     int w, h;
     image = utills::load_img_f(config_->ground_map_path_);
     fmt = image->format;
-    h = config_->height_ = image->h;
-    w = config_->width_ = image->w;
+    h = config_->map_height_ = image->h;
+    w = config_->map_width_ = image->w;
 
     auto bp = fmt->BitsPerPixel;
     /* Check the bitdepth of the surface */
@@ -259,7 +261,7 @@ std::shared_ptr<std::map<cords_t, characters_t>> map_t::generate_players_f()
     std::map<cords_t, characters_t> *characters_map = new std::map<cords_t, characters_t>;
     cords_t cords = cords_t(25, 25);
     characters_map->emplace(cords, player_t(config_, cords));
-    camera_ = camera_t(cords);
+    camera_.cords_= cords;
     return std::shared_ptr<std::map<cords_t, characters_t>>(characters_map);
 };
 
@@ -322,39 +324,30 @@ void map_t::render_high_ground_f(SDL_Renderer *renderer)
 
 void map_t::render_ground_f(SDL_Renderer *renderer)
 {
-    // if (check_camera_f())
-    // {
-    for (std::map<cords_t, ground_t>::iterator it = map_of_ground->begin(); it != map_of_ground->end(); ++it)
+    if (check_camera_f())
     {
-        if (it != map_of_ground->end())
+        printf("in\n");
+
+        for (std::map<cords_t, ground_t>::iterator it = map_of_ground->begin(); it != map_of_ground->end(); ++it)
         {
-            it->second.draw_f(renderer);
+            if (it != map_of_ground->end())
+            {
+                it->second.draw_f(renderer);
+            }
         }
     }
-    // }
-    // else
-    // {
-    //     int w, h;
+    else
+    {
+        printf("in else\n");
+        for (int y = camera_.cords_.y_ - (config_->screen_height_ << 2); y < camera_.cords_.y_ + (config_->screen_height_ << 2); y++)
+        {
+            for (int x = camera_.cords_.x_ - (config_->screen_width_ << 2); x < camera_.cords_.x_ + (config_->screen_width_ << 2); x++)
+            {
 
-    //     if (camera_.cords.y_ > config_->screen_height_ << 2)
-    //     {
-    //         h = config_->screen_height_ << 2;
-    //     }
-    //     else
-    //     {
-
-    //     }
-
-    // }
-
-    // for (int y = camera_.cords.y_ - h; y < camera_.cords.y_ + (config_->screen_height_ << 2); y++)
-    //     {
-    //         for (int x = camera_.cords.x_ - (config_->screen_width_ << 2); x < camera_.cords.x_ + (config_->screen_width_ << 2); x++)
-    //         {
-
-    //             map_of_ground->at(cords_t(x, y))
-    //         }
-    //     }
+                map_of_ground->at(cords_t(x, y));
+            }
+        }
+    }
 };
 
 void map_t::calculate_characters_f(){

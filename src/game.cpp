@@ -14,7 +14,7 @@ namespace game
     {
         std::cout << "start init game" << std::endl;
         hardware_ = create_hardware_f();
-        printf("config: %d  %d %d %d", config_->height_, config_->width_, config_->cell_size_, config_->map_size_);
+        printf("config: %d  %d %d %d", config_->map_height_, config_->map_width_, config_->cell_size_, config_->map_size_);
 
         world_ = world_t(config_);
         world_.create_map_f();
